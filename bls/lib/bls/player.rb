@@ -1,5 +1,4 @@
 
-
 class Player
 
   attr_accessor :can_accumulate
@@ -21,4 +20,9 @@ class Player
     end
   end
 
+  def throw_dice(dice)
+    for d in dice
+      d.roll()
+    end
+  end
 end
