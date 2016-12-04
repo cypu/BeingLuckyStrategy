@@ -67,19 +67,37 @@ class Game
     points
   end
 
+  def turn(player_index)
+    player = @players[player_index]
+
+    while player.can_roll_again
+      player.throw_dice(@dice)
+      if player.points >= 3000
+        @status = 'final'
+      end
+    end
+
+    player.throw_dice(@dice)
+    if player.points >= 3000
+      @status = 'final'
+    end
+  end
+
   def game_process()
-    while @status != 'finished' do
-
-      for player in @players
-
-        @dice = Array.new(5) {Die.new}
-        @player.throw_dice(@dice)
-        if player.points >= 3000
-          @status = 'finished'
+    while @status != 'final' do
+      @players.each_with_index do |player, index|
+        turn(index)
+        if @status == 'final'
+          break
         end
       end
-      @status = 'finished'
     end
+
+    # final round
+    @players.each_with_index do |player, index|
+      turn(index)
+    end
+    @status = 'finished'
   end
 
   def join_player(player)

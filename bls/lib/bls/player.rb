@@ -25,4 +25,9 @@ class Player
       d.roll()
     end
   end
+
+  def throw_again()
+    [false,true].sample
+  end
+
 end
