@@ -21,7 +21,7 @@ if __FILE__ == $0
   }
   dice = Array.new(5) {Die.new}
 
-  game = Game.new([player1, player2, player3], points_hash)
+  game = Game.new(points_hash, players: [player1, player2, player3])
 
   while game.status != 'final' do
     game.players.each_with_index do |player, index|

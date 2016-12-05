@@ -1,4 +1,4 @@
-
+# Definition of class Player
 class Player
 
   attr_accessor :can_accumulate, :can_roll_again
@@ -11,16 +11,15 @@ class Player
     @can_roll_again = true
   end
 
+  # Accumulate points
   def accumulate_points(points)
     if @can_accumulate
       @points += points
       return
     end
-    if points >= 300
-      @can_accumulate = true
-    end
   end
 
+  # Throwing dice action
   def throw_dice(dice, values=nil)
     if values != nil
       values.each_with_index do |val, index|
@@ -33,6 +32,7 @@ class Player
     end
   end
 
+  # Make a decision if throw dice again in turn
   def throw_again()
     [false,true].sample
   end
