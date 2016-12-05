@@ -1,22 +1,23 @@
 
 class Player
 
-  attr_accessor :can_accumulate
+  attr_accessor :can_accumulate, :can_roll_again
   attr_reader :points, :name
 
   def initialize(name='')
     @name = name
     @points = 0
     @can_accumulate = false
+    @can_roll_again = true
   end
 
   def accumulate_points(points)
-    if points >= 300
-      @can_accumulate = true
-    end
-
     if @can_accumulate
       @points += points
+      return
+    end
+    if points >= 300
+      @can_accumulate = true
     end
   end
 
@@ -26,7 +27,7 @@ class Player
         dice[index].roll(val)
       end
     else
-      for d in dice
+      for d in dice.select { |x| x.can_be_scoring == false && x.is_scoring == false }
         d.roll()
       end
     end

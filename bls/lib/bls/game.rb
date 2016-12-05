@@ -54,12 +54,10 @@ class Game
             break
           end
         end
-
-      if key_len == 0
-        set_can_be_scoring_to_scoring
-        points += val
-      end
-
+        if key_len == 0
+          set_can_be_scoring_to_scoring
+          points += val
+        end
       end
       reset_can_be_scored_dice
     end
@@ -68,15 +66,23 @@ class Game
 
   def turn(player_index)
     player = @players[player_index]
-    # while player.can_roll_again
+    turn_points = 0
+    while player.can_roll_again == true do
       player.throw_dice(@dice)
-      points = calc_points_for_dice
-      player.accumulate_points(points)
-      reset_dice
-      if player.points >= 3000
-        @status = 'final'
+      throw_points = calc_points_for_dice
+      if throw_points == 0 # when user throw again and get 0 points then it looses all points
+        turn_points = 0
+        break
       end
-    # end
+      turn_points += throw_points
+      player.can_roll_again = turn_points == 0 ? false : player.throw_again
+    end
+    player.accumulate_points(turn_points)
+    if player.points >= @points_to_final
+      @status = 'final'
+    end
+    reset_dice
+    player.can_roll_again = true
     @players[player_index] = player
   end
 
