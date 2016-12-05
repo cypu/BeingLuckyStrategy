@@ -9,9 +9,9 @@ class Die
    @can_be_scoring = false
  end
 
- # method responsible for dice roling
- def roll()
-   @value = rand(1..6)
+ # method responsible for die roling
+ def roll(value=nil)
+   @value = value != nil ? value : rand(1..6)
  end
 
  def reset()

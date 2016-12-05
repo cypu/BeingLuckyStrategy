@@ -20,9 +20,15 @@ class Player
     end
   end
 
-  def throw_dice(dice)
-    for d in dice
-      d.roll()
+  def throw_dice(dice, values=nil)
+    if values != nil
+      values.each_with_index do |val, index|
+        dice[index].roll(val)
+      end
+    else
+      for d in dice
+        d.roll()
+      end
     end
   end
 

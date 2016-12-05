@@ -2,8 +2,8 @@ require "bls/die"
 
 class Game
 
-  attr_reader :status, :dice
-  attr_accessor :players
+  attr_reader :dice
+  attr_accessor :players, :status
 
   def initialize(players, points_hash, points_to_final=3000)
     @players = players
@@ -16,7 +16,6 @@ class Game
   def start()
     if @players.length > 1
       @status = 'started'
-      #game_process
     else
       false
     end
@@ -69,41 +68,28 @@ class Game
 
   def turn(player_index)
     player = @players[player_index]
-
-    while player.can_roll_again
+    # while player.can_roll_again
       player.throw_dice(@dice)
+      points = calc_points_for_dice
+      player.accumulate_points(points)
+      reset_dice
       if player.points >= 3000
         @status = 'final'
       end
-    end
-
-    player.throw_dice(@dice)
-    if player.points >= 3000
-      @status = 'final'
-    end
-  end
-
-  def game_process()
-    while @status != 'final' do
-      @players.each_with_index do |player, index|
-        turn(index)
-        if @status == 'final'
-          break
-        end
-      end
-    end
-
-    # final round
-    @players.each_with_index do |player, index|
-      turn(index)
-    end
-    @status = 'finished'
+    # end
+    @players[player_index] = player
   end
 
   def join_player(player)
     @players << player
   end
 
-  private :reset_can_be_scored_dice, :set_can_be_scoring_to_scoring
+  def reset_dice
+    @dice.each_with_index do |die, index|
+      @dice[index].reset
+    end
+  end
+
+  private :reset_can_be_scored_dice, :set_can_be_scoring_to_scoring, :reset_dice
 
 end

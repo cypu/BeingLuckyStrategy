@@ -1,6 +1,5 @@
 require "bls/game"
 require "bls/player"
-require "pp"
 
 describe Game do
   before(:each) do
