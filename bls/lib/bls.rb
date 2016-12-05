@@ -21,22 +21,26 @@ if __FILE__ == $0
   }
   dice = Array.new(5) {Die.new}
 
-  game = Game.new(points_hash, players: [player1, player2, player3])
+  game = Game.new(points_hash, players: [player1, player2])
+  game.start
 
-  while game.status != 'final' do
-    game.players.each_with_index do |player, index|
-      game.turn(index)
-      if game.status == 'final'
-        break
+  if game.start
+    while game.status != 'final' do
+      game.players.each_with_index do |player, index|
+        game.turn(index)
+        if game.status == 'final'
+          break
+        end
       end
     end
-  end
 
-  # final round
-  game.players.each_with_index do |player, index|
-    game.turn(index)
+    # final round
+    game.players.each_with_index do |player, index|
+      game.turn(index)
+    end
+  else
+    puts "You need more players to start the game"
   end
-  game.status = 'finished'
 
   pp game.players
 

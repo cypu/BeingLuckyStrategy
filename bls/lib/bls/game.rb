@@ -6,22 +6,23 @@ class Game
   attr_reader :dice
   attr_accessor :players, :status
 
-  def initialize(points_hash, points_to_final: 3000, accumulate_band: 300, players: [])
+  def initialize(points_hash, points_to_final: 3000, accumulate_band: 300, players: [], minimum_players: 2)
     @players = players
     @dice = Array.new(5) {Die.new}
     @status = 'not_started'
     @points_to_final = points_to_final
     @points_hash = points_hash
     @accumulate_band = accumulate_band
+    @minimum_players = minimum_players
   end
 
   # Starts the game
   def start()
-    if @players.length > 1
+    if @players.length >= @minimum_players
       @status = 'started'
-    else
-      false
+      return true
     end
+    false
   end
 
   # Calculate the score for dice values
@@ -73,6 +74,9 @@ class Game
 
   # Defines algorithm of player's turn in the game
   def turn(player_index)
+    if @status == 'not_started'
+      return false
+    end
     player = @players[player_index]
     turn_points = 0
     while player.can_roll_again == true do
