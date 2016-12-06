@@ -1,6 +1,7 @@
 #  Definition of class Die
 class Die
- attr_accessor :value, :is_scoring, :can_be_scoring
+ attr_accessor :is_scoring, :can_be_scoring
+ attr_reader :value
 
  def initialize()
    @value = nil

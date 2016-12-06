@@ -20,15 +20,9 @@ class Player
   end
 
   # Throwing dice action
-  def throw_dice(dice, values=nil)
-    if values != nil
-      values.each_with_index do |val, index|
-        dice[index].roll(val)
-      end
-    else
-      for d in dice.select { |x| x.can_be_scoring == false && x.is_scoring == false }
-        d.roll()
-      end
+  def throw_dice(dice)
+    for d in dice.select { |x| x.can_be_scoring == false && x.is_scoring == false }
+      d.roll()
     end
   end
 
